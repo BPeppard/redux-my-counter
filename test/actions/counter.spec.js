@@ -43,5 +43,34 @@ function mockStore(getState, expectedActions, onLastAction) {
 }
 
 describe('actions', () => {
+  it('increment should create increment action', () => {
+    expect(actions.increment()).toEqual({type: actions.INCREMENT_COUNTER})
+  })
 
+  it('decrement should create decrement action', () => {
+    expect(actions.decrement()).toEqual({type: actions.DECREMENT_COUNTER})
+  })
+
+  it('incrementIfOdd should create increment action', (done) => {
+    const expectedActions = [
+      { type: actions.INCREMENT_COUNTER }
+    ]
+    const store = mockStore({ counter: 1 }, expectedActions, done)
+    store.dispatch(actions.incrementIfOdd())
+  })
+
+  it('incrementIfOdd should not create increment action if counter is even', (done) => {
+    const expectedActions = []
+    const store = mockStore({ counter: 2 }, expectedActions)
+    store.dispatch(actions.incrementIfOdd())
+    done()
+  })
+
+  it('incrementAsync should increment action', (done) => {
+    const expectedActions = [
+      { type: actions.INCREMENT_COUNTER }
+    ]
+    const store = mockStore({ counter: 0 }, expectedActions, done)
+    store.dispatch(actions.incrementAsync(100))
+  })
 })
